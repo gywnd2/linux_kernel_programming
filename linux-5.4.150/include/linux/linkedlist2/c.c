@@ -12,8 +12,6 @@
 
 struct my_node {
         struct list_head list;
-        struct my_node* prev;
-        struct my_node* next;
         int data;
 };
 
@@ -66,7 +64,7 @@ void struct_example(void)
                 target%=k;
 
                 starttime = ktime_get_ns();
-                my_list_for_each_entry(current_node, current_node, &my_list, list){
+                list_for_each_entry(current_node, &my_list, list){
                   count++;
                         if(current_node->data==target) {
                           count++;
@@ -86,7 +84,7 @@ void struct_example(void)
                 target%=k;
 
                 starttime = ktime_get_ns();
-                my_list_for_each_entry(current_node, current_node, &my_list, list){
+                list_for_each_entry(current_node, &my_list, list){
                         count++;
                         if(current_node->data==target){
                                 count++;
