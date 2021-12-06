@@ -83,7 +83,7 @@ void struct_example(void)
                 target%=k;
 
                 starttime = ktime_get_ns();
-                list_for_each_entry_safe(current_node, tmp, &my_list, list){
+                my_list_for_each_entry(current_node, current_node, tmp, list){
                         count++;
                         if(current_node->data==target){
                                 count++;

@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: GPL-2.0 */
-#ifndef _LINUX_LIST_H
+// #ifndef _LINUX_LIST_H
 #define _LINUX_LIST_H
 
 #include <linux/types.h>
@@ -582,7 +582,7 @@ static inline void list_splice_tail_init(struct list_head *list,
  * @head:	the head for your list.
  * @member:	the name of the list_head within the struct.
  */
-#define list_for_each_entry(pos1, pos2, head, member)				\
+#define my_list_for_each_entry(pos1, pos2, head, member)				\
 	for (pos1 = list_first_entry(head, typeof(*pos1), member), pos2 = list_last_entry(head, typeof(*pos2), member);	\
 	     !list_entry_is_head(pos1, head, member) || !list_entry_is_head(pos2, head, member);			\
 	     pos1 = list_next_entry(pos1, member), pos2 = list_prev_entry(pos2, member))
@@ -909,4 +909,4 @@ static inline void hlist_move_list(struct hlist_head *old,
 	     pos && ({ n = pos->member.next; 1; });			\
 	     pos = hlist_entry_safe(n, typeof(*pos), member))
 
-#endif
+// #endif
