@@ -3,14 +3,17 @@
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/init.h>
-#include "mylist.h"
+#include <linux/list.h>
 #include <linux/slab.h>
+#include "mylist.h"
 #include <linux/hrtimer.h>
 #include <linux/ktime.h>
 #include <linux/random.h>
 
 struct my_node {
         struct list_head list;
+        struct my_node* prev;
+        struct my_node* next;
         int data;
 };
 
@@ -63,7 +66,7 @@ void struct_example(void)
                 target%=k;
 
                 starttime = ktime_get_ns();
-                list_for_each_entry(current_node, &my_list, list){
+                my_list_for_each_entry(current_node, current_node, &my_list, list){
                   count++;
                         if(current_node->data==target) {
                           count++;
@@ -83,7 +86,7 @@ void struct_example(void)
                 target%=k;
 
                 starttime = ktime_get_ns();
-                my_list_for_each_entry(current_node, current_node, tmp, list){
+                my_list_for_each_entry(current_node, current_node, &my_list, list){
                         count++;
                         if(current_node->data==target){
                                 count++;
