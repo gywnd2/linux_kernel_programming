@@ -5,6 +5,7 @@
 #include <linux/slab.h>
 #include <linux/hrtimer.h>
 #include <linux/ktime.h>
+#include <linux/random.h>
 
 struct my_node {
         struct list_head list;
@@ -53,15 +54,24 @@ void struct_example(void)
                 }
                 //do_clock_adjtime(CLOCK_REALTIME, &spclock[0]);
                 count = 0;
+
+                // get random int value
+                unsigned int target;
+                get_random_bytes(&target, sizeof(int));
+                target%=k;
+
                 starttime = ktime_get_ns();
                 list_for_each_entry(current_node, &my_list, list){
-                        int cur = current_node->data;
-                        count++;
+                  count++;
+                        if(current_node->data==target) {
+                          count++;
+                          break;
+                        }
                 }
                 //do_clock_adjtime(CLOCK_REALTIME, &spclock[1]);
                 endtime = ktime_get_ns();
                 //calclock3(endtime-starttime, &list_time, &list_count);
-                printk("search %d times, time: %llu, count: %llu \n", k, endtime-starttime, count);
+                printk("search %d times, time: %llu, count: %llu, found random data : %d\n", k, endtime-starttime, count, target);
 
                 struct my_node *tmp;
                 count = 0;
