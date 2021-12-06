@@ -1,5 +1,3 @@
-# https://github.com/dionidip/LinuxProject/blob/main/module_test/nlist.c
-
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/init.h>
@@ -57,7 +55,7 @@ void struct_example(void)
                 //do_clock_adjtime(CLOCK_REALTIME, &spclock[0]);
                 count = 0;
 
-                // get random int value
+                // get random int value for search
                 unsigned int target;
                 get_random_bytes(&target, sizeof(int));
                 target%=k;
@@ -77,16 +75,25 @@ void struct_example(void)
 
                 struct my_node *tmp;
                 count = 0;
+
+                // get random int value for delete
+                get_random_bytes(&target, sizeof(int));
+                target%=k;
+
                 starttime = ktime_get_ns();
                 list_for_each_entry_safe(current_node, tmp, &my_list, list){
-                        list_del(&current_node->list);
-                        kfree(current_node);
                         count++;
+                        if(current_node->data==target){
+                                count++;
+                                list_del(&current_node->list);
+                                kfree(current_node);
+                                break;
+                        }
                 }
                 //do_clock_adjtime(CLOCK_REALTIME, &spclock[1]);
                 endtime = ktime_get_ns();
                 //calclock3(endtime-starttime, &list_time, &list_count);
-                printk("delete %d times, time: %llu, count: %llu \n", k, endtime-starttime, count);
+                printk("delete %d times, time: %llu, count: %llu, deleted random data : %d\n", k, endtime-starttime, count, target);
         }
 }
 
