@@ -5,10 +5,15 @@
 #include <linux/init.h>
 #include <linux/list.h>
 #include <linux/slab.h>
-#include "mylist.h"
+#include <linux/list.h>
 #include <linux/hrtimer.h>
 #include <linux/ktime.h>
 #include <linux/random.h>
+
+#define my_list_for_each_entry(pos1, pos2, head, member)				\
+	for (pos1 = list_first_entry(head, typeof(*pos1), member), pos2 = list_last_entry(head, typeof(*pos2), member);	\
+	     !list_entry_is_head(pos1, head, member) || !list_entry_is_head(pos2, head, member);			\
+	     pos1 = list_next_entry(pos1, member), pos2 = list_prev_entry(pos2, member))
 
 struct my_node {
         struct list_head list;
@@ -64,7 +69,7 @@ void struct_example(void)
                 target%=k;
 
                 starttime = ktime_get_ns();
-                list_for_each_entry(current_node, &my_list, list){
+                my_list_for_each_entry(current_node, current_node, &my_list, list){
                   count++;
                         if(current_node->data==target) {
                           count++;
@@ -84,7 +89,7 @@ void struct_example(void)
                 target%=k;
 
                 starttime = ktime_get_ns();
-                list_for_each_entry(current_node, &my_list, list){
+                my_list_for_each_entry(current_node, current_node, &my_list, list){
                         count++;
                         if(current_node->data==target){
                                 count++;
